@@ -1,4 +1,5 @@
 import re
+from functools import reduce
 
 
 def replace_quotes(text):
@@ -23,7 +24,7 @@ def replace_special_symbols(text):
     text = text.replace('№', '&#8470;')
     text = text.replace('(R)', '&reg;')
     text = text.replace('+-', '&plusmn;')
-    text = text.replace('(С)', '&copy;')
+    text = text.replace('(C)', '&copy;')
     text = text.replace('...', '&hellip;')
     return text
 
@@ -55,17 +56,13 @@ def add_nonbreakable_spaces(text):
 
 
 def typograph(text):
-    if not text:
+    if text is None:
         return "Введена пустая строка"
-    text_after_typograph = add_nonbreakable_spaces(
-        replace_hyphen_by_dash(
-            replace_special_symbols(
-                delete_extra_spaces(
-                    correct_phone_numbers(
-                        replace_quotes(text)
-                    )
-                )
-            )
-        )
-    )
+    text_after_typograph = reduce(
+        lambda text, func: func(text), [text, replace_quotes,
+                                        correct_phone_numbers,
+                                        delete_extra_spaces,
+                                        replace_special_symbols,
+                                        replace_hyphen_by_dash,
+                                        add_nonbreakable_spaces])
     return text_after_typograph
