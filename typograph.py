@@ -56,8 +56,6 @@ def add_nonbreakable_spaces(text):
 
 
 def typograph(text):
-    if text is None:
-        return "Введена пустая строка"
     text_after_typograph = reduce(
         lambda text, func: func(text), [text, replace_quotes,
                                         correct_phone_numbers,
