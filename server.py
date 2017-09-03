@@ -7,13 +7,14 @@ app = Flask(__name__)
 def form():
     if request.method == 'POST':
         input_text = request.form.get('text')
-        original_text = input_text
         if not input_text:
-            input_text = None
+            output_text = "Введена пустая строка"
+        else:
+            output_text = typograph(input_text)
         return render_template(
             'form.html',
-            text_after_typograph=typograph(input_text),
-            text_before_typograph=original_text)
+            text_after_typograph=output_text,
+            text_before_typograph=input_text)
     else:
         return render_template('form.html')
 
